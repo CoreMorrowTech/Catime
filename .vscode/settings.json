@@ -2,6 +2,9 @@
     "files.associations": {
         "windows.h": "c",
         "type_traits": "c",
-        "timer.h": "c"
+        "timer.h": "c",
+        "cstdlib": "c",
+        "*.rh": "c",
+        "timer_events.h": "c"
     }
 }

@@ -2026,3 +2026,330 @@ void DrawRoundedRectangle(HDC hdc, RECT rect, int radius)
 ## 全局变量(notification模块)
 - `NOTIFICATION_TIMEOUT_MS`: 通知显示时间(毫秒)
 - `NOTIFICATION_TYPE`: 当前通知类型配置
+
+## font.c 模块
+
+### 1. LoadFontFromResource
+```c
+BOOL LoadFontFromResource(HINSTANCE hInstance, int resourceId)
+```
+**功能**：从资源加载字体  
+**参数**：
+- hInstance: 应用程序实例句柄
+- resourceId: 字体资源ID  
+**返回值**：加载成功返回TRUE，失败返回FALSE  
+**描述**：从应用程序资源中加载指定的字体资源。
+
+### 2. LoadFontByName
+```c
+BOOL LoadFontByName(HINSTANCE hInstance, const char* fontName)
+```
+**功能**：根据字体名称加载字体  
+**参数**：
+- hInstance: 应用程序实例句柄
+- fontName: 字体名称  
+**返回值**：加载成功返回TRUE，失败返回FALSE  
+**描述**：根据字体名称查找并加载对应的字体资源。
+
+### 3. WriteConfigFont
+```c
+void WriteConfigFont(const char* font_file_name)
+```
+**功能**：写入字体配置  
+**参数**：
+- font_file_name: 字体文件名  
+**描述**：将当前使用的字体配置写入配置文件。
+
+### 4. ListAvailableFonts
+```c
+void ListAvailableFonts(void)
+```
+**功能**：列出可用字体  
+**描述**：枚举系统中可用的字体列表。
+
+### 5. PreviewFont
+```c
+BOOL PreviewFont(HINSTANCE hInstance, const char* fontName)
+```
+**功能**：预览字体  
+**参数**：
+- hInstance: 应用程序实例句柄
+- fontName: 要预览的字体名称  
+**返回值**：预览成功返回TRUE，失败返回FALSE  
+**描述**：临时加载并显示指定字体用于预览。
+
+### 6. CancelFontPreview
+```c
+void CancelFontPreview(void)
+```
+**功能**：取消字体预览  
+**描述**：取消当前字体预览状态，恢复原字体。
+
+### 7. ApplyFontPreview
+```c
+void ApplyFontPreview(void)
+```
+**功能**：应用字体预览  
+**描述**：将预览的字体设置为当前字体。
+
+### 8. SwitchFont
+```c
+BOOL SwitchFont(HINSTANCE hInstance, const char* fontName)
+```
+**功能**：切换字体  
+**参数**：
+- hInstance: 应用程序实例句柄
+- fontName: 要切换的字体名称  
+**返回值**：切换成功返回TRUE，失败返回FALSE  
+**描述**：切换应用程序使用的字体。
+
+## 全局变量(font模块)
+- `fontResources`: 字体资源数组
+- `FONT_RESOURCES_COUNT`: 字体资源数量
+- `FONT_FILE_NAME`: 当前字体文件名
+- `FONT_INTERNAL_NAME`: 字体内部名称
+- `PREVIEW_FONT_NAME`: 预览字体文件名
+- `PREVIEW_INTERNAL_NAME`: 预览字体内部名称
+- `IS_PREVIEWING`: 是否正在预览字体
+
+## language.c 模块
+
+### 1. GetLocalizedString
+```c
+const wchar_t* GetLocalizedString(const wchar_t* chinese, const wchar_t* english)
+```
+**功能**：获取本地化字符串  
+**参数**：
+- chinese: 中文文本(可选)
+- english: 英文文本(必填)  
+**返回值**：当前语言的本地化字符串  
+**描述**：根据当前语言设置返回对应的本地化字符串，支持10种语言。
+
+### 2. SetLanguage
+```c
+BOOL SetLanguage(AppLanguage language)
+```
+**功能**：设置当前语言  
+**参数**：
+- language: 要设置的语言(AppLanguage枚举)  
+**返回值**：设置成功返回TRUE，失败返回FALSE  
+**描述**：切换应用程序语言并加载对应的语言资源。
+
+### 3. GetCurrentLanguage
+```c
+AppLanguage GetCurrentLanguage()
+```
+**功能**：获取当前语言设置  
+**返回值**：当前语言(AppLanguage枚举)  
+**描述**：返回当前设置的语言类型。
+
+### 4. LoadLanguageResource
+```c
+static int LoadLanguageResource(AppLanguage language)
+```
+**功能**：加载语言资源  
+**参数**：
+- language: 要加载的语言  
+**返回值**：加载成功返回1，失败返回0  
+**描述**：从资源文件加载指定语言的翻译字符串。
+
+### 5. ParseIniLine
+```c
+static int ParseIniLine(const wchar_t* line)
+```
+**功能**：解析语言文件行  
+**参数**：
+- line: 要解析的行文本  
+**返回值**：解析成功返回1，失败返回0  
+**描述**：解析语言文件中的键值对格式。
+
+### 6. DetectSystemLanguage
+```c
+static void DetectSystemLanguage()
+```
+**功能**：检测系统语言  
+**描述**：根据系统UI语言设置自动检测首选语言。
+
+## 全局变量(language模块)
+- `CURRENT_LANGUAGE`: 当前语言设置(APP_LANG_ENGLISH等)
+- `g_translations`: 翻译字符串数组
+- `g_translation_count`: 已加载的翻译数量
+
+## 枚举定义(language模块)
+```c
+typedef enum {
+    APP_LANG_ENGLISH,      // 英语
+    APP_LANG_CHINESE_SIMP, // 简体中文
+    APP_LANG_CHINESE_TRAD, // 繁体中文
+    APP_LANG_SPANISH,      // 西班牙语
+    APP_LANG_FRENCH,       // 法语
+    APP_LANG_GERMAN,       // 德语
+    APP_LANG_RUSSIAN,      // 俄语
+    APP_LANG_PORTUGUESE,   // 葡萄牙语
+    APP_LANG_JAPANESE,     // 日语
+    APP_LANG_KOREAN,       // 韩语
+    APP_LANG_COUNT         // 语言总数
+} AppLanguage;
+```
+
+## startup.c 模块
+
+### 1. IsAutoStartEnabled
+```c
+BOOL IsAutoStartEnabled(void)
+```
+**功能**：检查是否已启用开机自启动  
+**返回值**：已启用返回TRUE，未启用返回FALSE  
+**描述**：检查系统启动文件夹中是否存在应用程序的快捷方式。
+
+### 2. CreateShortcut
+```c
+BOOL CreateShortcut(void)
+```
+**功能**：创建开机自启动快捷方式  
+**返回值**：创建成功返回TRUE，失败返回FALSE  
+**描述**：在系统启动文件夹中创建应用程序的快捷方式。
+
+### 3. RemoveShortcut
+```c
+BOOL RemoveShortcut(void)
+```
+**功能**：删除开机自启动快捷方式  
+**返回值**：删除成功返回TRUE，失败返回FALSE  
+**描述**：从系统启动文件夹中删除应用程序的快捷方式。
+
+### 4. UpdateStartupShortcut
+```c
+BOOL UpdateStartupShortcut(void)
+```
+**功能**：更新开机自启动快捷方式  
+**返回值**：更新成功返回TRUE，失败返回FALSE  
+**描述**：先删除旧的快捷方式再创建新的，确保快捷方式指向正确的应用程序路径。
+
+### 5. ApplyStartupMode
+```c
+void ApplyStartupMode(HWND hwnd)
+```
+**功能**：应用启动模式设置  
+**参数**：
+- hwnd: 窗口句柄  
+**描述**：根据配置文件中设置的启动模式(COUNT_UP/SHOW_TIME/NO_DISPLAY/COUNTDOWN)初始化应用程序状态。
+
+## 启动模式定义(startup模块)
+- `COUNT_UP`: 正计时模式
+- `SHOW_TIME`: 显示当前时间模式
+- `NO_DISPLAY`: 不显示模式
+- `COUNTDOWN`: 倒计时模式(默认)
+
+## 依赖的全局变量(startup模块)
+- `CLOCK_SHOW_CURRENT_TIME`: 显示实时时钟模式
+- `CLOCK_COUNT_UP`: 正计时模式开关
+- `CLOCK_TOTAL_TIME`: 总计时时间(秒)
+- `countdown_elapsed_time`: 倒计时已用时间
+- `countup_elapsed_time`: 正计时累计时间
+- `CLOCK_DEFAULT_START_TIME`: 默认启动时间
+- `CLOCK_STARTUP_MODE[20]`: 启动模式配置
+
+## shortcut_checker.c 模块
+
+### 1. IsStoreOrWingetInstall
+```c
+static bool IsStoreOrWingetInstall(char* exe_path, size_t path_size)
+```
+**功能**：检查是否为商店或WinGet安装  
+**参数**：
+- exe_path: 可执行文件路径缓冲区
+- path_size: 缓冲区大小  
+**返回值**：是商店/WinGet安装返回true，否则返回false  
+**描述**：检查程序是否通过Microsoft Store或WinGet安装。
+
+### 2. CheckShortcutTarget
+```c
+static int CheckShortcutTarget(const char* exe_path, char* shortcut_path_out, 
+                              size_t shortcut_path_size, char* target_path_out, 
+                              size_t target_path_size)
+```
+**功能**：检查快捷方式目标  
+**参数**：
+- exe_path: 预期目标路径
+- shortcut_path_out: 输出快捷方式路径
+- shortcut_path_size: 快捷方式路径缓冲区大小
+- target_path_out: 输出实际目标路径
+- target_path_size: 目标路径缓冲区大小  
+**返回值**：检查结果状态码  
+**描述**：验证快捷方式是否指向正确的目标路径。
+
+### 3. CreateOrUpdateDesktopShortcut
+```c
+static bool CreateOrUpdateDesktopShortcut(const char* exe_path, 
+                                         const char* existing_shortcut_path)
+```
+**功能**：创建或更新桌面快捷方式  
+**参数**：
+- exe_path: 目标可执行文件路径
+- existing_shortcut_path: 现有快捷方式路径(可选)  
+**返回值**：操作成功返回true，失败返回false  
+**描述**：在桌面创建或更新指向指定可执行文件的快捷方式。
+
+### 4. CheckAndCreateShortcut
+```c
+int CheckAndCreateShortcut(void)
+```
+**功能**：主检查函数  
+**返回值**：操作结果状态码  
+**描述**：主入口函数，执行完整的快捷方式检查流程。
+
+### 5. IsShortcutCheckDone
+```c
+static bool IsShortcutCheckDone(void)
+```
+**功能**：检查是否已完成快捷方式检查  
+**返回值**：已完成返回true，否则返回false  
+**描述**：检查配置文件中是否已标记快捷方式检查完成。
+
+## 辅助函数(shortcut_checker模块)
+- `StartsWith`: 检查字符串是否以指定前缀开头
+- `Contains`: 检查字符串是否包含子串
+
+## 模块交互关系说明
+
+### 番茄钟功能模块(pomodoro)
+
+#### 1. 核心模块
+- **timer_events.c**: 主逻辑实现
+  - 管理番茄钟状态机
+  - 处理时间切换逻辑
+  - 触发通知和回调
+
+#### 2. 数据交互
+- **pomodoro.h**: 定义数据结构
+  - `POMODORO_PHASE`: 阶段枚举(工作/休息/空闲)
+  - `PomodoroState`: 状态结构体
+- **timer.c**: 
+  - 维护`pomodoro_work_cycles`计数
+- **config.c**:
+  - 管理番茄钟时间配置
+  - 处理热键设置
+
+#### 3. 用户界面
+- **window_procedure.c**:
+  - 注册番茄钟热键
+  - 处理状态切换
+- **tray_menu.c**:
+  - 显示番茄钟菜单项
+  - 更新状态指示
+
+#### 4. 配置管理
+```c
+// 典型配置项
+POMODORO_TIME_OPTIONS=1500,300,1500,600 // 工作时间,短休息,工作时间,长休息
+POMODORO_LOOP_COUNT=4                   // 循环次数
+HOTKEY_POMODORO=Ctrl+Alt+P               // 热键设置
+```
+
+#### 5. 交互流程
+1. 用户通过菜单或热键启动番茄钟
+2. timer_events.c管理阶段切换
+3. 每个阶段结束时触发通知
+4. 完成所有循环后重置状态
+5. 配置变更通过config.c持久化
