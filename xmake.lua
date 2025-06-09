@@ -1,6 +1,6 @@
 -- 定义项目信息
 set_project("Catime")
-set_version("1.0.0")
+set_version("3.0.0")
 
 -- 设置xmake最低版本要求
 set_xmakever("2.5.0")

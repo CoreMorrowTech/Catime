@@ -17,7 +17,7 @@
 #pragma comment(lib, "wininet.lib")
 
 // 更新源URL
-#define GITHUB_API_URL "https://api.github.com/repos/vladelaina/Catime/releases/latest"
+#define GITHUB_API_URL "https://api.github.com/repos/CoreMorrowTech/Catime/releases/latest"
 #define USER_AGENT "Catime Update Checker"
 
 // 添加版本信息结构体定义
