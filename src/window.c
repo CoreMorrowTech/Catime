@@ -517,6 +517,9 @@ HWND CreateMainWindow(HINSTANCE hInstance, int nCmdShow) {
     // 设置窗口透明度
     SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 255, LWA_COLORKEY);
 
+    // 禁用点击穿透
+    SetClickThrough(hwnd, FALSE);
+
     // 设置模糊效果
     SetBlurBehind(hwnd, FALSE);
 
