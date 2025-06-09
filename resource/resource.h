@@ -2,10 +2,11 @@
 #define CATIME_RESOURCE_H
 
 /* 版本与更新信息 */
-#define CATIME_VERSION "1.1.3-alpha"
+// #define CATIME_VERSION "1.1.3-alpha"
+#define CATIME_VERSION "1.0.1"
 #define CATIME_VERSION_MAJOR 1
-#define CATIME_VERSION_MINOR 1
-#define CATIME_VERSION_PATCH 2
+#define CATIME_VERSION_MINOR 0
+#define CATIME_VERSION_PATCH 1
 #define CATIME_VERSION_BUILD 0
 
 /* 鸣谢链接 */

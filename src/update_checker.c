@@ -44,12 +44,14 @@ int CompareVersions(const char* version1, const char* version2) {
     
     int major1, minor1, patch1;
     int major2, minor2, patch2;
+    char pre1[32] = {0}, pre2[32] = {0};
     
-    // 解析版本号
-    sscanf(version1, "%d.%d.%d", &major1, &minor1, &patch1);
-    sscanf(version2, "%d.%d.%d", &major2, &minor2, &patch2);
+    // 解析版本号，支持预发布标识
+    sscanf(version1, "%d.%d.%d%31s", &major1, &minor1, &patch1, pre1);
+    sscanf(version2, "%d.%d.%d%31s", &major2, &minor2, &patch2, pre2);
     
-    LOG_DEBUG("解析版本1: %d.%d.%d, 版本2: %d.%d.%d", major1, minor1, patch1, major2, minor2, patch2);
+    LOG_DEBUG("解析版本1: %d.%d.%d%s, 版本2: %d.%d.%d%s", 
+             major1, minor1, patch1, pre1, major2, minor2, patch2, pre2);
     
     // 比较主版本号
     if (major1 > major2) return 1;
@@ -62,6 +64,19 @@ int CompareVersions(const char* version1, const char* version2) {
     // 比较修订版本号
     if (patch1 > patch2) return 1;
     if (patch1 < patch2) return -1;
+    
+    // 处理预发布版本比较
+    int hasPre1 = (pre1[0] != '\0');
+    int hasPre2 = (pre2[0] != '\0');
+    
+    // 正式版本 > 预发布版本
+    if (hasPre1 && !hasPre2) return -1;
+    if (!hasPre1 && hasPre2) return 1;
+    
+    // 两个都是预发布版本，按字符串比较
+    if (hasPre1 && hasPre2) {
+        return strcmp(pre1, pre2);
+    }
     
     return 0;
 }
@@ -100,6 +115,8 @@ BOOL ParseLatestVersionFromJson(const char* jsonResponse, char* latestVersion, s
     
     // 查找下载URL
     const char* downloadUrlPos = strstr(jsonResponse, "\"browser_download_url\":");
+    LOG_DEBUG("downloadUrlPos指向位置: %p, 内容: %.*s...", 
+             downloadUrlPos, 50, downloadUrlPos ? downloadUrlPos : "(null)");
     if (!downloadUrlPos) {
         LOG_ERROR("JSON解析失败：找不到browser_download_url字段");
         return FALSE;
