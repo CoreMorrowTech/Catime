@@ -5,6 +5,8 @@
         "timer.h": "c",
         "cstdlib": "c",
         "*.rh": "c",
-        "timer_events.h": "c"
+        "timer_events.h": "c",
+        "window.h": "c",
+        "stdio.h": "c"
     }
 }
