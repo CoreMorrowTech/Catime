@@ -44,13 +44,13 @@
      HBITMAP memBitmap = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
      HBITMAP oldBitmap = (HBITMAP)SelectObject(memDC, memBitmap);
  
-     // 设置白色背景
-     HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
+     // 设置白色背景√
+     HBRUSH hBrush = CreateSolidBrush(RGB(120, 120, 120));
      FillRect(memDC, &rect, hBrush);
      DeleteObject(hBrush);
  
-     // 绘制灰色边框
-     HPEN hPen = CreatePen(PS_SOLID, 1, RGB(200, 200, 200));
+    //  绘制灰色边框√
+     HPEN hPen = CreatePen(PS_SOLID, 10, RGB(120, 120, 120));
      HPEN hOldPen = (HPEN)SelectObject(memDC, hPen);
      Rectangle(memDC, rect.left, rect.top, rect.right, rect.bottom);
      SelectObject(memDC, hOldPen);
